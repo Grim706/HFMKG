@@ -7,8 +7,18 @@
 
 #include "Player.h"
 #include "Menu.h"
+#include "Pig.h"
+#include "Proyectil.h"
+#include "Bandido.h"
+#include "GameOverScreen.h"
+#include "GameState.h"
+#include "register_types.h"
+#include "score_manager.hpp"
+
+
 
 using namespace godot;
+static GameState *game_state_instance = nullptr;
 
 void initialize_gdextension_types(ModuleInitializationLevel p_level)
 {
@@ -17,11 +27,24 @@ void initialize_gdextension_types(ModuleInitializationLevel p_level)
 	}
 	GDREGISTER_CLASS(Player);
 	GDREGISTER_CLASS(Menu);
+	GDREGISTER_CLASS(Pig);
+	GDREGISTER_CLASS(Proyectil);
+	GDREGISTER_CLASS(Bandido);
+	GDREGISTER_CLASS(GameOverScreen);
+	GDREGISTER_CLASS(GameState);
+	//GDREGISTER_CLASS(ScoreManager);
+	if (game_state_instance == nullptr) {
+		game_state_instance = memnew(GameState);
+	}
 }
 
 void uninitialize_gdextension_types(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
+	}
+	if (game_state_instance != nullptr) {
+		memdelete(game_state_instance);
+		game_state_instance = nullptr;
 	}
 }
 
